@@ -53,8 +53,12 @@ extern "C" JNIEXPORT void JNICALL Java_no_uia_yannis11_echoes_MainActivity_cInit
 	ERRCHECK(result);
 	result = FMOD_System_CreateDSPByType(fmodSystem, FMOD_DSP_TYPE_PITCHSHIFT, &dsppitch);
 	ERRCHECK(result);
-	result = FMOD_DSP_SetParameter(dsppitch, FMOD_DSP_PITCHSHIFT_PITCH, 0.5f);
+	result = FMOD_DSP_SetParameter(dsppitch, FMOD_DSP_PITCHSHIFT_PITCH, 2.0f);
 	ERRCHECK(result);
+	
+	FMOD_DSP *dspreverb;
+	FMOD_System_CreateDSPByType(fmodSystem, FMOD_DSP_TYPE_SFXREVERB, &dspreverb);
+	FMOD_DSP_SetParameter(dspreverb, FMOD_DSP_SFXREVERB_ROOM, -1800.0f);
 
 	result = FMOD_System_CreateChannelGroup(fmodSystem, "Scary", &groupScary);
 	ERRCHECK(result);
@@ -64,6 +68,8 @@ extern "C" JNIEXPORT void JNICALL Java_no_uia_yannis11_echoes_MainActivity_cInit
 
 	result = FMOD_System_GetMasterChannelGroup(fmodSystem, &masterGroup);
 	ERRCHECK(result);
+	
+	FMOD_ChannelGroup_AddDSP(masterGroup, dspreverb, 0);
 
 	result = FMOD_ChannelGroup_AddGroup(masterGroup, groupScary);
 	ERRCHECK(result);
@@ -144,8 +150,10 @@ extern "C" JNIEXPORT void JNICALL Java_no_uia_yannis11_echoes_MainActivity_cPlay
 		float fr;
 		result = FMOD_Channel_GetFrequency(channels[index], &fr);
 		ERRCHECK(result);
-		result = FMOD_Channel_SetFrequency(channels[index], -1*fr);
+		result = FMOD_Channel_SetFrequency(channels[index], -0.5f*fr);
 		ERRCHECK(result);
+		FMOD_Channel_SetChannelGroup(channels[index], groupScary);
+		FMOD_Channel_SetVolume(channels[index], 0.3f);
 		break;
 	}
 }

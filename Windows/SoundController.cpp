@@ -80,8 +80,12 @@ SoundController::SoundController()
 	ERRCHECK(result);
 	result = system->createDSPByType(FMOD_DSP_TYPE_PITCHSHIFT, &dsppitch);
 	ERRCHECK(result);
-	result = dsppitch->setParameter(FMOD_DSP_PITCHSHIFT_PITCH, 0.5f);
+	result = dsppitch->setParameter(FMOD_DSP_PITCHSHIFT_PITCH, 2.0f);
 	ERRCHECK(result);
+
+	FMOD::DSP *dspreverb;
+	system->createDSPByType(FMOD_DSP_TYPE_SFXREVERB, &dspreverb);
+	dspreverb->setParameter(FMOD_DSP_SFXREVERB_ROOM, -1800.0f);
 
 	result = system->createChannelGroup("Scary", &groupScary);
 	ERRCHECK(result);
@@ -91,6 +95,8 @@ SoundController::SoundController()
 
 	result = system->getMasterChannelGroup(&masterGroup);
 	ERRCHECK(result);
+
+	masterGroup->addDSP(dspreverb, 0);
 
 	result = masterGroup->addGroup(groupScary);
 	ERRCHECK(result);
@@ -145,8 +151,10 @@ void SoundController::play(unsigned int index, bool loop, bool wait, char effect
 		float fr;
 		result = channels[index]->getFrequency(&fr);
 		ERRCHECK(result);
-		result = channels[index]->setFrequency(-1*fr);
+		result = channels[index]->setFrequency(-0.5f*fr);
 		ERRCHECK(result);
+		result = channels[index]->setChannelGroup(groupScary);
+		channels[index]->setVolume(0.3f);
 		break;
 	}
 }

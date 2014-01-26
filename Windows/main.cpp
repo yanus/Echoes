@@ -10,7 +10,7 @@
 
 void print_debug_msg(const char *format, ...)
 {
-#ifdef PRINT_DEBUG_MSG
+#ifdef _DEBUG
 	va_list argptr;
 	va_start(argptr, format);
 	vprintf(format, argptr);
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 {
 	const char *art = "    _______  _______           _______  _______  _______   _________ _       \n   (  ____ \\(  ____ \\|\\     /|(  ___  )(  ____ \\(  ____ \\  \\__   __/( (    /|\n   | (    \\/| (    \\/| )   ( || (   ) || (    \\/| (    \\/     ) (   |  \\  ( |\n   | (__    | |      | (___) || |   | || (__    | (_____      | |   |   \\ | |\n   |  __)   | |      |  ___  || |   | ||  __)   (_____  )     | |   | (\\ \\) |\n   | (      | |      | (   ) || |   | || (            ) |     | |   | | \\   |\n   | (____/\\| (____/\\| )   ( || (___) || (____/\\/\\____) |  ___) (___| )  \\  |\n   (_______/(_______/|/     \\|(_______)(_______/\\_______)  \\_______/|/    )_)\n                                                                             \n       _________          _______    ______   _______  _______  _       \n       \\__   __/|\\     /|(  ____ \\  (  __  \\ (  ___  )(  ____ )| \\    /\\\n          ) (   | )   ( || (    \\/  | (  \\  )| (   ) || (    )||  \\  / /\n          | |   | (___) || (__      | |   ) || (___) || (____)||  (_/ / \n          | |   |  ___  ||  __)     | |   | ||  ___  ||     __)|   _ (  \n          | |   | (   ) || (        | |   ) || (   ) || (\\ (   |  ( \\ \\ \n          | |   | )   ( || (____/\\  | (__/  )| )   ( || ) \\ \\__|  /  \\ \\\n          )_(   |/     \\|(_______/  (______/ |/     \\||/   \\__/|_/    \\/\n\n";
 	printf(art);
-	printf("Press any key to start...\nMake sure to turn the volume up...\nUse left and right arrow keys to make choices...\nSpacebar to pause...\n");
+	printf("Press any key to start...\nMake sure to turn the volume up...\nUse the F and J or left and right arrow keys to make choices...\nSpacebar to pause...\n");
 	int key = _getch();
 	if (key == 27)
 		return 0;
@@ -74,16 +74,24 @@ int main(int argc, char *argv[])
 				system->setPaused(paused);
 				print_debug_msg(paused ? "Paused\n" : "Resumed\n");
 			}
+#ifdef _DEBUG
+			if (key == 's')
+			{
+				system->stopAll();
+			}
+#endif
 
 			if (waiting)
 			{
 				switch (key)
 				{
+				case 'f':
 				case 75:
 					print_debug_msg("left\n");
 					pos = labels[option1];
 					waiting = false;
 					break;
+				case 'j':
 				case 77:
 					print_debug_msg("right\n");
 					pos = labels[option2];
