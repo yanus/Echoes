@@ -3,7 +3,6 @@ M0
 bing
 !name
 bing
-%2+name
 M1
 +clock
 ?investigate:goback
