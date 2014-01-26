@@ -6,7 +6,7 @@
 #include <vector>
 #include <cstdarg>
 
-//#define PRINT_DEBUG_MSG
+#define PRINT_DEBUG_MSG
 
 void print_debug_msg(const char *format, ...)
 {
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 {
 	const char *art = "    _______  _______           _______  _______  _______   _________ _       \n   (  ____ \\(  ____ \\|\\     /|(  ___  )(  ____ \\(  ____ \\  \\__   __/( (    /|\n   | (    \\/| (    \\/| )   ( || (   ) || (    \\/| (    \\/     ) (   |  \\  ( |\n   | (__    | |      | (___) || |   | || (__    | (_____      | |   |   \\ | |\n   |  __)   | |      |  ___  || |   | ||  __)   (_____  )     | |   | (\\ \\) |\n   | (      | |      | (   ) || |   | || (            ) |     | |   | | \\   |\n   | (____/\\| (____/\\| )   ( || (___) || (____/\\/\\____) |  ___) (___| )  \\  |\n   (_______/(_______/|/     \\|(_______)(_______/\\_______)  \\_______/|/    )_)\n                                                                             \n       _________          _______    ______   _______  _______  _       \n       \\__   __/|\\     /|(  ____ \\  (  __  \\ (  ___  )(  ____ )| \\    /\\\n          ) (   | )   ( || (    \\/  | (  \\  )| (   ) || (    )||  \\  / /\n          | |   | (___) || (__      | |   ) || (___) || (____)||  (_/ / \n          | |   |  ___  ||  __)     | |   | ||  ___  ||     __)|   _ (  \n          | |   | (   ) || (        | |   ) || (   ) || (\\ (   |  ( \\ \\ \n          | |   | )   ( || (____/\\  | (__/  )| )   ( || ) \\ \\__|  /  \\ \\\n          )_(   |/     \\|(_______/  (______/ |/     \\||/   \\__/|_/    \\/\n\n";
 	printf(art);
-	printf("Press any key to start...\nMake sure to turn the volume up...\nUse left and right arrow keys to make choices...\n");
+	printf("Press any key to start...\nMake sure to turn the volume up...\nUse left and right arrow keys to make choices...\nSpacebar to pause...\n");
 	int key = _getch();
 	if (key == 27)
 		return 0;
@@ -49,16 +49,10 @@ int main(int argc, char *argv[])
 			labels[label] = position;
 		}
 	}
-	//std::string commands[10] = { "+clock", "morning", "bing", "!name", "bing", "welcome", "name" };
 	std::map<std::string, unsigned int> sounds;
 	unsigned int pos = 0;
 
 	SoundController *system = new SoundController();
-
-	/*soundMorning = system->createSound("morning.wav");
-	soundBing = system->createSound("bing.wav");
-	soundWelcome = system->createSound("welcome.wav");
-	soundClock = system->createSound("clock.wav");*/
 
 
 	/*
@@ -68,7 +62,7 @@ int main(int argc, char *argv[])
 	key = 0;
 	std::string option1, option2;
 	int finalOption = 0;
-	while (key != 27)
+	while (key != 27 && pos < commands.size())
 	{
 		if (_kbhit())
 		{
@@ -99,16 +93,6 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		/*if (waiting)
-		{
-			if (!system->isWaiting())
-			{
-				++pos;
-				print_debug_msg("Position: %d\n", pos);
-				waiting = false;
-			}
-		}*/
-
 
 		if (!system->isWaiting() && pos < commands.size() && !waiting && !paused)
 		{
@@ -135,7 +119,7 @@ int main(int argc, char *argv[])
 			case '+':
 				if (sounds.count(rest) == 0)
 				{
-					std::string filename = "audio\\" + rest + ".wav";
+					std::string filename = "audio\\" + rest + ".mp3";
 					sounds[rest] = system->createSound(filename.c_str());
 				}
 				sound = sounds[rest];
@@ -189,7 +173,7 @@ int main(int argc, char *argv[])
 			default:
 				if (sounds.count(command) == 0)
 				{
-					std::string filename = "audio\\" + command + ".wav";
+					std::string filename = "audio\\" + command + ".mp3";
 					sounds[command] = system->createSound(filename.c_str());
 				}
 				sound = sounds[command];
@@ -198,35 +182,6 @@ int main(int argc, char *argv[])
 			}
 
 			++pos;
-
-			/*switch (state)
-			{
-			case 0:
-			system->play(soundClock, true, false);
-			system->play(soundMorning, false, true);
-			waiting = true;
-			break;
-			case 1:
-			system->play(soundBing, false, true);
-			waiting = true;
-			break;
-			case 2:
-			recName = system->record(2);
-			waiting = true;
-			break;
-			case 3:
-			system->play(soundBing, false, true);
-			waiting = true;
-			break;
-			case 4:
-			system->play(soundWelcome, false, true);
-			waiting = true;
-			break;
-			case 5:
-			system->play(recName, false, true);
-			waiting = true;
-			break;
-			}*/
 		}
 
 		system->update();
@@ -235,7 +190,11 @@ int main(int argc, char *argv[])
 
 	}
 
-	print_debug_msg("\n");
+	if (key != 27)
+		printf("The End");
+
+	// Wait a bit before destroying the audio channels
+	Sleep(100);
 
 	/*
 	Shut down
