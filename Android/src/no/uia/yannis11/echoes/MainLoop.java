@@ -98,7 +98,7 @@ public class MainLoop extends Thread
 				case '+':
 					if (!sounds.containsKey(rest))
 					{
-						String filename = "/sdcard/fmod/" + rest + ".wav";
+						String filename = "/sdcard/echoes/" + rest + ".mp3";
 						sounds.put(rest, parent.cCreateSound(filename));
 					}
 					sound = sounds.get(rest);
@@ -120,6 +120,7 @@ public class MainLoop extends Thread
 					option2 = rest.substring(p+1);
 					waiting = true;
 					break;
+				case '#':
 				case ':':
 					break;
 				case '>':
@@ -148,7 +149,7 @@ public class MainLoop extends Thread
 				default:
 					if (!sounds.containsKey(command))
 					{
-						String filename = "/sdcard/fmod/" + command + ".wav";
+						String filename = "/sdcard/echoes/" + command + ".mp3";
 						sounds.put(command, parent.cCreateSound(filename));
 					}
 					sound = sounds.get(command);
