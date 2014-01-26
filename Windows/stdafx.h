@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <conio.h>
 
-#include "../../api/inc/fmod.hpp"
-#include "../../api/inc/fmod_errors.h"
+#include "../../FMOD Programmers API Windows/api/inc/fmod.hpp"
+#include "../../FMOD Programmers API Windows/api/inc/fmod_errors.h"
 
 #include "SoundController.h"
