@@ -1,0 +1,9 @@
+:one
++clock
+morning
+bing
+?one:two
+:two
+welcome
+morning
+:quit
