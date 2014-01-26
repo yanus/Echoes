@@ -47,7 +47,7 @@ public class MainActivity extends Activity
 					
 					active = false;
 					
-					btnPlay.setText("Play");
+					btnPlay.setText(R.string.play);
 					btnCancel.setEnabled(false);
 				}
 			}
@@ -61,13 +61,12 @@ public class MainActivity extends Activity
 				{
 					// Start new game
 					loop = new MainLoop(MainActivity.this, commands);
-					loop.setRunning(true);
 					loop.start();
 					
 					active = true;
 					paused = false;
 					
-					btnPlay.setText("Pause");
+					btnPlay.setText(R.string.pause);
 					btnCancel.setEnabled(true);
 				}
 				else if (!paused)
@@ -77,7 +76,7 @@ public class MainActivity extends Activity
 					cSetPaused(true);
 					
 					paused = true;
-					btnPlay.setText("Resume");
+					btnPlay.setText(R.string.resume);
 				}
 				else
 				{
@@ -86,7 +85,7 @@ public class MainActivity extends Activity
 					cSetPaused(false);
 					
 					paused = false;
-					btnPlay.setText("Pause");
+					btnPlay.setText(R.string.pause);
 				}
 			}
 		});

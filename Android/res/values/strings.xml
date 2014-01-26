@@ -4,5 +4,11 @@
     <string name="app_name">Echoes</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="cancel">Cancel</string>
+    <string name="left">Option 1</string>
+    <string name="right">Option 2</string>
 
 </resources>

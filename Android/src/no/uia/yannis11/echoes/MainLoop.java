@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.os.Environment;
+
 public class MainLoop extends Thread
 {
 	private MainActivity parent;
@@ -12,12 +14,6 @@ public class MainLoop extends Thread
 		super();
 		this.parent = parent;
 		this.commands = commands;
-	}
-	
-	private boolean running;
-	public void setRunning(boolean running)
-	{
-		this.running = running;
 	}
 	
 	private int input = 0;
@@ -99,7 +95,7 @@ public class MainLoop extends Thread
 				case '+':
 					if (!sounds.containsKey(rest))
 					{
-						String filename = "/sdcard/echoes/" + rest + ".mp3";
+						String filename = Environment.getExternalStorageDirectory().getPath() + "/echoes/" + rest + ".mp3";
 						sounds.put(rest, parent.cCreateSound(filename));
 					}
 					sound = sounds.get(rest);
@@ -153,7 +149,7 @@ public class MainLoop extends Thread
 				default:
 					if (!sounds.containsKey(command))
 					{
-						String filename = "/sdcard/echoes/" + command + ".mp3";
+						String filename = Environment.getExternalStorageDirectory().getPath() + "/echoes/" + command + ".mp3";
 						sounds.put(command, parent.cCreateSound(filename));
 					}
 					sound = sounds.get(command);
