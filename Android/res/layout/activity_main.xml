@@ -4,11 +4,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/button1"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Play" />
+        android:orientation="horizontal"
+        android:weightSum="1.0" >
+
+        <Button
+            android:id="@+id/btnPlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="Play" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:text="Cancel" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,19 +33,18 @@
         android:weightSum="1.0" >
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btnLeft"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Left"
-            android:layout_weight="0.5" />
+            android:layout_weight="0.5"
+            android:text="Left" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/btnRight"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Reight"
-            android:layout_weight="0.5" />
-
+            android:layout_weight="0.5"
+            android:text="Reight" />
     </LinearLayout>
 
 </LinearLayout>

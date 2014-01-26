@@ -216,6 +216,11 @@ void SoundController::stop(unsigned int index)
 	}
 }
 
+void SoundController::stopAll()
+{
+	masterGroup->stop();
+}
+
 unsigned int SoundController::record(unsigned int length)
 {
 	FMOD_CREATESOUNDEXINFO exinfo;

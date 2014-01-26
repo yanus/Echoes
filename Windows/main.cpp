@@ -132,6 +132,9 @@ int main(int argc, char *argv[])
 					system->stop(sound);
 				}
 				break;
+			case '~':
+				system->stopAll();
+				break;
 			case '!':
 				sounds[rest] = system->record(2);
 				break;

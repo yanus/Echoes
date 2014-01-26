@@ -1,11 +1,8 @@
 package no.uia.yannis11.echoes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import android.util.Log;
 
 public class MainLoop extends Thread
 {
@@ -35,7 +32,11 @@ public class MainLoop extends Thread
 	
 	private Map<String, Integer> sounds = new HashMap<String, Integer>();
 	
-	private boolean paused = false, waiting = false;
+	private boolean paused = false, waiting = false, canceled = false;
+	
+	public void setPaused(boolean paused) { this.paused = paused; };
+	public void cancel() { this.canceled = true; };
+	
 	private int pos = 0;
 	
 	String option1, option2;
@@ -55,7 +56,7 @@ public class MainLoop extends Thread
 			}
 		}
 		
-		while (pos < commands.size())
+		while (pos < commands.size() && !canceled)
 		{
 			if (input > 0)
 			{
@@ -110,6 +111,9 @@ public class MainLoop extends Thread
 						sound = sounds.get(rest);
 						parent.cStop(sound);
 					}
+					break;
+				case '~':
+					parent.cStopAll();
 					break;
 				case '!':
 					sounds.put(rest, parent.cRecord(2));
@@ -170,6 +174,6 @@ public class MainLoop extends Thread
 				e.printStackTrace();
 			}
 		}
-		parent.cEnd();
+		//parent.cEnd();
 	}
 }

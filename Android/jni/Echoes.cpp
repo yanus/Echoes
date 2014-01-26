@@ -115,6 +115,11 @@ extern "C" JNIEXPORT void JNICALL Java_no_uia_yannis11_echoes_MainActivity_cStop
 	}
 }
 
+extern "C" JNIEXPORT void JNICALL Java_no_uia_yannis11_echoes_MainActivity_cStopAll(JNIEnv * env, jobject thiz)
+{
+	FMOD_ChannelGroup_Stop(masterGroup);
+}
+
 extern "C" JNIEXPORT void JNICALL Java_no_uia_yannis11_echoes_MainActivity_cPlay(JNIEnv * env, jobject thiz, jint jindex, jboolean jloop, jboolean jwait, jchar jeffect)
 {
 	unsigned int index = jindex;

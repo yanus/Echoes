@@ -1,7 +1,5 @@
 package no.uia.yannis11.echoes;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -18,47 +16,101 @@ public class MainActivity extends Activity
 	private FMODAudioDevice mFMODAudioDevice = new FMODAudioDevice();
 	private MainLoop loop;
 	private ArrayList<String> commands;
+	private boolean active = false, paused = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		Button button = (Button) findViewById(R.id.button1);
-		button.setOnClickListener(new OnClickListener() {
+		
+		final Button btnCancel = (Button) findViewById(R.id.btnCancel);
+		final Button btnPlay = (Button) findViewById(R.id.btnPlay);
+		btnCancel.setEnabled(false);
+		btnCancel.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				if (MainActivity.this.loop == null)
+				if (active && loop != null)
 				{
-					MainActivity.this.loop = new MainLoop(MainActivity.this, MainActivity.this.commands);
-					MainActivity.this.loop.setRunning(true);
-					MainActivity.this.loop.start();
+					loop.cancel();
+					boolean retry = true;
+					while (retry)
+					{
+						try
+						{
+							loop.join();
+							retry = false;
+						} catch (InterruptedException e) {}
+					}
+					cStopAll();
+					
+					active = false;
+					
+					btnPlay.setText("Play");
+					btnCancel.setEnabled(false);
 				}
 			}
 		});
 
-		button = (Button) findViewById(R.id.button2);
-		button.setOnClickListener(new OnClickListener() {
+		btnPlay.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				if (MainActivity.this.loop != null)
+				if (!active)
 				{
-					MainActivity.this.loop.setInput(1);
+					// Start new game
+					loop = new MainLoop(MainActivity.this, commands);
+					loop.setRunning(true);
+					loop.start();
+					
+					active = true;
+					paused = false;
+					
+					btnPlay.setText("Pause");
+					btnCancel.setEnabled(true);
+				}
+				else if (!paused)
+				{
+					// Pause the game
+					loop.setPaused(true);
+					cSetPaused(true);
+					
+					paused = true;
+					btnPlay.setText("Resume");
+				}
+				else
+				{
+					// Resume the game
+					loop.setPaused(false);
+					cSetPaused(false);
+					
+					paused = false;
+					btnPlay.setText("Pause");
 				}
 			}
 		});
 
-		button = (Button) findViewById(R.id.button3);
-		button.setOnClickListener(new OnClickListener() {
+		final Button btnLeft = (Button) findViewById(R.id.btnLeft);
+		btnLeft.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				if (MainActivity.this.loop != null)
+				if (loop != null)
 				{
-					MainActivity.this.loop.setInput(2);
+					loop.setInput(1);
+				}
+			}
+		});
+
+		final Button btnRight = (Button) findViewById(R.id.btnRight);
+		btnRight.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (loop != null)
+				{
+					loop.setInput(2);
 				}
 			}
 		});
@@ -105,6 +157,7 @@ public class MainActivity extends Activity
 	public native void cEnd();
 	public native int cCreateSound(String filename);
 	public native void cStop(int index);
+	public native void cStopAll();
 	public native void cPlay(int index, boolean loop, boolean wait, char effect);
 	public native void cSetPaused(boolean paused);
 	public native boolean cIsWaiting();

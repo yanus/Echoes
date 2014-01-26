@@ -12,6 +12,7 @@ public:
 	unsigned int createSound(const char *filename);
 	void play(unsigned int index, bool loop, bool wait, char effect='0');
 	void stop(unsigned int index);
+	void stopAll();
 	unsigned int record(unsigned int length);
 	void enableEffect(unsigned int sound, bool enabled);
 	bool isWaiting();
